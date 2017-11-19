@@ -1,5 +1,6 @@
 import requests
 import datetime
+import os
 
 class BotHandler:
 
@@ -30,7 +31,8 @@ class BotHandler:
 
         return last_update
 
-greet_bot = BotHandler(token)
+bot_token = os.environ.get('BOT_TOKEN')
+greet_bot = BotHandler(bot_token)
 greetings = ('hello', 'hi', 'greetings', 'sup')
 now = datetime.datetime.now()
 
