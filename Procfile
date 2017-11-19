@@ -1,1 +1,1 @@
-web: python vakioseuraaja/vakioseuraaja.py
+vakioseuraaja: python vakioseuraaja/vakioseuraaja.py
