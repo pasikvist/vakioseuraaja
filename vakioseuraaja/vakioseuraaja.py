@@ -84,7 +84,7 @@ class TekstiTvHandler:
 
     def __init__(self, browser_name):
         if browser_name == "phantomjs":
-            self.driver = webdriver.PhantomJS("~/vendor/phantomjs/bin/phantomjs")
+            self.driver = webdriver.PhantomJS(executable_path='~/vendor/phantomjs/bin/phantomjs')
         else:
             self.driver = webdriver.Chrome("C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe")
 
