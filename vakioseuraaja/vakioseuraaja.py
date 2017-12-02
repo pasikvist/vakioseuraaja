@@ -82,9 +82,11 @@ class TekstiTvHandler:
     TEKSTITV_LATEST_PAGE_CONTENT = ""
     TEKSTITV_LATEST_PAGE_NUMBER = ""
 
-
-    def __init__(self):
-        self.driver = webdriver.Chrome("C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe")
+    def __init__(self, browser_name):
+        if browser_name == "phantomjs":
+            self.driver = webdriver.PhantomJS("~/vendor/phantomjs/bin/phantomjs")
+        else:
+            self.driver = webdriver.Chrome("C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe")
 
     def trim_page(self, page_content):
         page_content = page_content.replace("---------------------------------------", "--------------------------------")
@@ -183,13 +185,14 @@ class BotHandler:
 def _print(line):
     print line
 
+browser_name = os.environ.get('BROWSER_NAME')
 bot_token = os.environ.get('BOT_TOKEN')
 vakiokone_user = os.environ.get('VAKIOKONE_USER')
 vakiokone_pass = os.environ.get('VAKIOKONE_PASS')
 
 def main():
     greet_bot = BotHandler(bot_token)
-    browser = TekstiTvHandler()
+    browser = TekstiTvHandler(browser_name)
     vakiokone = VakiokoneHandler(vakiokone_user, vakiokone_pass)
     new_offset = None
     page_content = ""
