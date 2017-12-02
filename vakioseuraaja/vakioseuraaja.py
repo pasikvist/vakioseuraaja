@@ -87,8 +87,8 @@ class TekstiTvHandler:
             os.system('pwd')
             os.system('echo $PATH')
             os.system('ls -la ~/vendor/phantomjs/bin/phantomjs')
-
-            self.driver = webdriver.PhantomJS(executable_path='~/vendor/phantomjs/bin/phantomjs')
+            os.system('phantomjs --version')
+            self.driver = webdriver.PhantomJS()
         else:
             self.driver = webdriver.Chrome("C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe")
 
