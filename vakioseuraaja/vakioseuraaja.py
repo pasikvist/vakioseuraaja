@@ -8,6 +8,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 # requests might throw connection error
 from requests.exceptions import ConnectionError
 
+# Count is updated every timeout-seconds
+MAX_COUNT = 960
+TIMEOUT = 30
+COUNT = 0
+
 class VakiokoneHandler:
     VAKIOKONE_WINNING_ROW_LIST = ""
     VAKIOKONE_LATEST_PAGE_CONTENT = ""
@@ -156,7 +161,7 @@ class BotHandler:
         self.token = token
         self.api_url = "https://api.telegram.org/bot{}/".format(token)
 
-    def get_updates(self, offset=None, timeout=30):
+    def get_updates(self, offset=None, timeout=TIMEOUT):
         method = 'getUpdates'
         params = {'timeout': timeout, 'offset': offset}
         resp = requests.get(self.api_url + method, params)
@@ -175,7 +180,7 @@ class BotHandler:
         resp = requests.post(self.api_url + method, params)
         return resp
 
-    def get_last_update(self, offset=None, timeout=30):
+    def get_last_update(self, offset=None, timeout=TIMEOUT):
         get_result = self.get_updates(offset, timeout)
 
         if len(get_result) > 0:
@@ -189,19 +194,21 @@ class BotHandler:
 def _print(line):
     print line
 
-browser_name = os.environ.get('BROWSER_NAME')
-bot_token = os.environ.get('BOT_TOKEN')
-vakiokone_user = os.environ.get('VAKIOKONE_USER')
-vakiokone_pass = os.environ.get('VAKIOKONE_PASS')
-
 def main():
+    browser_name = os.environ.get('BROWSER_NAME')
+    bot_token = os.environ.get('BOT_TOKEN')
+    vakiokone_user = os.environ.get('VAKIOKONE_USER')
+    vakiokone_pass = os.environ.get('VAKIOKONE_PASS')
+
     greet_bot = BotHandler(bot_token)
     browser = TekstiTvHandler(browser_name)
     vakiokone = VakiokoneHandler(vakiokone_user, vakiokone_pass)
     new_offset = None
     page_content = ""
 
-    while True:
+    global COUNT
+    global MAX_COUNT
+    while (COUNT < MAX_COUNT):
         #greet_bot.get_updates(new_offset)
         try:
             last_update = greet_bot.get_last_update(new_offset)
@@ -254,10 +261,18 @@ def main():
                     print "No game status changes"
             else:
                 print "No update."
+        COUNT += 1
 
 if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        print "except"
-        exit()
+    global COUNT
+    global MAX_COUNT
+    while True:
+        if (COUNT < MAX_COUNT):
+            try:
+                main()
+            except Exception as e:
+                print e
+                print "COUNT:" + COUNT
+        else:
+            print "COUNT:" + COUNT
+            exit()
