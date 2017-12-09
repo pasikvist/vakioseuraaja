@@ -16,7 +16,7 @@ COUNT = 0
 class VakiokoneHandler:
     VAKIOKONE_WINNING_ROW_LIST = ""
     VAKIOKONE_LATEST_PAGE_CONTENT = ""
-    VAKIOKONE_LATEST_PAGE_NUMBER = ""
+    VAKIOKONE_LATEST_PAGE_NUMBER = "671"
 
     def __init__(self, username, password):
         current_year = str(datetime.datetime.now().isocalendar()[0])
