@@ -103,14 +103,14 @@ class TekstiTvHandler:
         page_content = page_content.replace("   ", " ")
         page_content = page_content.replace("  ", " ")
         page_content = page_content.replace("West Bromwich", "West B")
-        page_content = page_content.replace("Bournemouth", "Bournem")
-        page_content = page_content.replace("Middlesbrough", "Middlesb")
+        page_content = page_content.replace("Bournemouth", "B.rnem")
+        page_content = page_content.replace("Middlesbrough", "M.brgh")
         page_content = page_content.replace("Burton Albion", "Burton")
         page_content = page_content.replace("Bristol City", "Bristol C")
-        page_content = page_content.replace("Aston Villa", "Aston V")
+        page_content = page_content.replace("Aston Villa", "AV")
         page_content = page_content.replace("Tottenham", "Tottenh")
         page_content = page_content.replace("Sunderland", "Sunderl")
-        page_content = page_content.replace("Huddersfield", "Hudders")
+        page_content = page_content.replace("Huddersfield", "Hddfld")
         page_content = page_content.replace("Southampton", "Southam")
         page_content = page_content.replace("Sheffield", "Sheff")
         page_content = page_content.replace("Man United", "Man U")
@@ -119,6 +119,9 @@ class TekstiTvHandler:
         page_content = page_content.replace("Millwall", "Millw")
         page_content = page_content.replace("Nottingham", "N.ham")
         page_content = page_content.replace("Brentford", "Brentf")
+        page_content = page_content.replace("CrystalP", "CP")
+        page_content = page_content.replace("Birmingham", "B.mingh")
+        page_content = page_content.replace("Leicester", "Lester")
         return page_content
 
     def get_latest_page_content(self):
