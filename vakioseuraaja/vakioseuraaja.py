@@ -12,6 +12,8 @@ from requests.exceptions import ConnectionError
 MAX_COUNT = 960
 TIMEOUT = 30
 COUNT = 0
+global COUNT
+global MAX_COUNT
 
 class VakiokoneHandler:
     VAKIOKONE_WINNING_ROW_LIST = ""
