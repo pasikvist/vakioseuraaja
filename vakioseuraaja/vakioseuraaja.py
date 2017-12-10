@@ -86,6 +86,8 @@ class TekstiTvHandler:
     TEKSTITV_PAGE_NOT_FOUND = "Sivua ei löytynyt!"
     TEKSTITV_LATEST_PAGE_CONTENT = ""
     TEKSTITV_LATEST_PAGE_NUMBER = ""
+    TEKSTITV_MONITOR_PAGE_CONTENTS = []
+    TEKSTITV_MONITOR_PAGE_NUMBERS = []
 
     def __init__(self, browser_name):
         if browser_name == "phantomjs":
@@ -211,6 +213,7 @@ def main():
 
     global COUNT
     global MAX_COUNT
+
     while (COUNT < MAX_COUNT):
         #greet_bot.get_updates(new_offset)
         try:
@@ -235,6 +238,9 @@ def main():
                 page_content = vakiokone.return_status_on_page(page_content)
                 vakiokone.VAKIOKONE_LATEST_PAGE_NUMBER = browser.TEKSTITV_LATEST_PAGE_NUMBER
                 vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
+            elif last_chat_text.find("seuraa") != -1:
+                browser.TEKSTITV_MONITOR_PAGE_CONTENTS.append(browser.TEKSTITV_LATEST_PAGE_CONTENT)
+                browser.TEKSTITV_MONITOR_PAGE_NUMBERS.append(browser.TEKSTITV_LATEST_PAGE_NUMBER)
             else:
                 page_content = "Ei ole tuettu komento."
 
@@ -247,11 +253,10 @@ def main():
 
         else:
             if vakiokone.VAKIOKONE_LATEST_PAGE_NUMBER != "":
-                print "Check monitored games."
                 page_content = browser.get_page_content(vakiokone.VAKIOKONE_LATEST_PAGE_NUMBER)
                 page_content = vakiokone.return_status_on_page(page_content)
                 if page_content.find(vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT) == -1:
-                    print "Game statuses changed!"
+                    print "Vakio game statuses changed!"
                     try:
                         greet_bot.send_message(last_chat_id, page_content)
                         vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
@@ -261,9 +266,23 @@ def main():
                     new_offset = last_update_id + 1
 
                 else:
-                    print "No game status changes"
-            else:
-                print "No update."
+                    print "No vakio game changes"
+
+            id = 0
+            while (id < len(browser.TEKSTITV_MONITOR_PAGE_NUMBERS)):
+                page_content = browser.get_page_content(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id])
+                if page_content.find(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id]) == -1:
+                    print "Page " + browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] + " status changed!"
+                    try:
+                        greet_bot.send_message(last_chat_id, page_content)
+                        browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] = page_content
+                    except ConnectionError:
+                        last_update = ""
+                        greet_bot = BotHandler(bot_token)
+                    new_offset = last_update_id + 1
+                else:
+                    print "No page changes"
+                id += 1
         COUNT += 1
 
 if __name__ == '__main__':
