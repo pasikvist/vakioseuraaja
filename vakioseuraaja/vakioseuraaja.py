@@ -9,11 +9,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from requests.exceptions import ConnectionError
 
 # Count is updated every timeout-seconds
+global COUNT
+global MAX_COUNT
+global TIMEOUT
 MAX_COUNT = 960
 TIMEOUT = 30
 COUNT = 0
-global COUNT
-global MAX_COUNT
 
 class VakiokoneHandler:
     VAKIOKONE_WINNING_ROW_LIST = ""
@@ -243,9 +244,9 @@ def main():
             elif last_chat_text.find("seuraa") != -1:
                 browser.TEKSTITV_MONITOR_PAGE_CONTENTS.append(browser.TEKSTITV_LATEST_PAGE_CONTENT)
                 browser.TEKSTITV_MONITOR_PAGE_NUMBERS.append(browser.TEKSTITV_LATEST_PAGE_NUMBER)
-                page_content = "Seuraan nyt sivua " + browser.TEKSTITV_LATEST_PAGE_CONTENT + "."
+                page_content = "Seuraan nyt sivua " + browser.TEKSTITV_LATEST_PAGE_NUMBER + "."
             else:
-                page_content = "En tunnista tätä: " + last_chat_text.find
+                page_content = "En tunnista tätä: " + last_chat_text
 
             try:
                 greet_bot.send_message(last_chat_id, page_content)
