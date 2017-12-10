@@ -241,8 +241,9 @@ def main():
             elif last_chat_text.find("seuraa") != -1:
                 browser.TEKSTITV_MONITOR_PAGE_CONTENTS.append(browser.TEKSTITV_LATEST_PAGE_CONTENT)
                 browser.TEKSTITV_MONITOR_PAGE_NUMBERS.append(browser.TEKSTITV_LATEST_PAGE_NUMBER)
+                page_content = "Seuraan nyt sivua " + browser.TEKSTITV_LATEST_PAGE_CONTENT + "."
             else:
-                page_content = "Ei ole tuettu komento."
+                page_content = "En tunnista tätä: " + last_chat_text.find
 
             try:
                 greet_bot.send_message(last_chat_id, page_content)
@@ -270,9 +271,9 @@ def main():
 
             id = 0
             while (id < len(browser.TEKSTITV_MONITOR_PAGE_NUMBERS)):
-                page_content = browser.get_page_content(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id])
+                page_content = browser.get_page_content(browser.TEKSTITV_MONITOR_PAGE_NUMBERS[id])
                 if page_content.find(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id]) == -1:
-                    print "Page " + browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] + " status changed!"
+                    print "Page " + browser.TEKSTITV_MONITOR_PAGE_NUMBERS[id] + " status changed!"
                     try:
                         greet_bot.send_message(last_chat_id, page_content)
                         browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] = page_content
@@ -294,7 +295,7 @@ if __name__ == '__main__':
                 main()
             except Exception as e:
                 print e
-                print "COUNT:" + COUNT
+                print "COUNT:" + str(COUNT)
         else:
-            print "COUNT:" + COUNT
+            print "COUNT:" + str(COUNT)
             exit()
