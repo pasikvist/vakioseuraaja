@@ -3,6 +3,7 @@ import requests
 import datetime
 import os
 import re
+import difflib
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 # requests might throw connection error
@@ -81,7 +82,7 @@ class VakiokoneHandler:
 
                 page_content = page_content + hits_text + str(line_number) + "." + line + " " + winning_marks + "\n"
 
-        page_content = page_content + str(hits_number) + "/" + str(games_started) + " osumaa\n"
+        page_content = str(hits_number) + "/" + str(games_started) + " osumaa:\n" + page_content
         return page_content
 
 class TekstiTvHandler:
@@ -235,7 +236,7 @@ def main():
             last_chat_text = last_chat_text.lower()
             if last_chat_text.isdigit():
                 page_content = browser.get_page_content(last_chat_text)
-            elif last_chat_text.find("vakio") != -1:
+            elif last_chat_text.find("vakio1") != -1:
                 vakiokone = VakiokoneHandler(vakiokone_user, vakiokone_pass)
                 page_content = browser.get_page_content(browser.TEKSTITV_LATEST_PAGE_NUMBER)
                 page_content = vakiokone.return_status_on_page(page_content)
@@ -278,7 +279,11 @@ def main():
                 if page_content.find(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id]) == -1:
                     print "Page " + browser.TEKSTITV_MONITOR_PAGE_NUMBERS[id] + " status changed!"
                     try:
-                        greet_bot.send_message(last_chat_id, page_content)
+                        page_content_incl_diff_list = difflib.ndiff(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id].splitlines(1), page_content.splitlines(1))
+                        page_content_incl_diff = ''.join(page_content_incl_diff_list)
+                        only_diff_str = re.sub(r'^[ \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
+                        #greet_bot.send_message(last_chat_id, page_content)
+                        greet_bot.send_message(last_chat_id, only_diff_str)
                         browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] = page_content
                     except ConnectionError:
                         last_update = ""
