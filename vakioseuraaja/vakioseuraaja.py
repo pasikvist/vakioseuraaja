@@ -281,11 +281,12 @@ def main():
                     try:
                         page_content_incl_diff_list = difflib.ndiff(browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id].splitlines(1), page_content.splitlines(1))
                         page_content_incl_diff = ''.join(page_content_incl_diff_list)
-                        only_diff_str = re.sub(r'^[ \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
-                        #greet_bot.send_message(last_chat_id, page_content)
+                        # Remove empty lines, question mark -lines and minus-lines
+                        only_diff_str = re.sub(r'^[-? \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
                         greet_bot.send_message(last_chat_id, only_diff_str)
                         browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] = page_content
                     except ConnectionError:
+
                         last_update = ""
                         greet_bot = BotHandler(bot_token)
                     new_offset = last_update_id + 1
