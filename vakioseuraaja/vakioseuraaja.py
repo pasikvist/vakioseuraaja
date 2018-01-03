@@ -230,9 +230,8 @@ def main():
             last_update_id = last_update['update_id']
             last_chat_text = last_update['message']['text']
             last_chat_id = last_update['message']['chat']['id']
-            last_chat_text = unicode(last_chat_text, "utf-8")
             print "'" + last_chat_text + "'"
-            
+
             last_chat_text = last_chat_text.replace("/", "")
             last_chat_text = last_chat_text.lower()
             if last_chat_text.isdigit():
@@ -243,8 +242,8 @@ def main():
                 page_content = vakiokone.return_status_on_page(page_content)
                 vakiokone.VAKIOKONE_LATEST_PAGE_NUMBER = browser.TEKSTITV_LATEST_PAGE_NUMBER
                 vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
-            elif last_chat_text.find("timeout=") != -1:
-                timeout = last_chat_text.replace("timeout=", "")
+            elif last_chat_text.find("timeout ") != -1:
+                timeout = last_chat_text.replace("timeout ", "")
                 if timeout.isdigit():
                     TIMEOUT = timeout
                     page_content = "Timeout käytössä. Tarkistan seuratut sivut " + timeout + " sekunnin välein."
