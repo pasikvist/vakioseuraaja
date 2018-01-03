@@ -230,8 +230,9 @@ def main():
             last_update_id = last_update['update_id']
             last_chat_text = last_update['message']['text']
             last_chat_id = last_update['message']['chat']['id']
+            last_chat_text = unicode(last_chat_text, "utf-8")
             print "'" + last_chat_text + "'"
-
+            
             last_chat_text = last_chat_text.replace("/", "")
             last_chat_text = last_chat_text.lower()
             if last_chat_text.isdigit():
