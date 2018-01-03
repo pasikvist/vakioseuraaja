@@ -242,6 +242,13 @@ def main():
                 page_content = vakiokone.return_status_on_page(page_content)
                 vakiokone.VAKIOKONE_LATEST_PAGE_NUMBER = browser.TEKSTITV_LATEST_PAGE_NUMBER
                 vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
+            elif last_chat_text.find("timeout=") != -1:
+                timeout = last_chat_text.replace("timeout=", "")
+                if timeout.isdigit():
+                    TIMEOUT = timeout
+                    page_content = "Timeout käytössä. Tarkistan seuratut sivut " + timeout + " sekunnin välein."
+                else:
+                    page_content = "Antamasi timeout-arvo ei ole numeroarvo!"
             elif last_chat_text.find("seuraa") != -1:
                 browser.TEKSTITV_MONITOR_PAGE_CONTENTS.append(browser.TEKSTITV_LATEST_PAGE_CONTENT)
                 browser.TEKSTITV_MONITOR_PAGE_NUMBERS.append(browser.TEKSTITV_LATEST_PAGE_NUMBER)
