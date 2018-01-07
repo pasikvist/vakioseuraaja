@@ -104,7 +104,7 @@ class TekstiTvHandler:
             self.driver = webdriver.Chrome("C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe")
 
     def trim_page(self, page_content):
-        page_content = page_content.replace("---------------------------------------", "--------------------------------")
+        page_content = page_content.replace("---------------------------------------", "-------------------------------")
         page_content = page_content.replace("    ", " ")
         page_content = page_content.replace("   ", " ")
         page_content = page_content.replace("  ", " ")
@@ -135,6 +135,8 @@ class TekstiTvHandler:
         page_content = page_content.replace("Norwich", "Canaries")
         page_content = page_content.replace("Nottingham", "TrickyTrees")
         page_content = page_content.replace("Southampton", "Saints")
+        page_content = page_content.replace("Sheffield U", "Blades")
+        page_content = page_content.replace("Sheffield W", "Owls")
         page_content = page_content.replace("Sheff U", "Blades")
         page_content = page_content.replace("Sheff W", "Owls")
         page_content = page_content.replace("Sunderland", "BlackCats")
