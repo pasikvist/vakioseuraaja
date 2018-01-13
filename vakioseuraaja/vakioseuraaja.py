@@ -108,33 +108,47 @@ class TekstiTvHandler:
         page_content = page_content.replace("    ", " ")
         page_content = page_content.replace("   ", " ")
         page_content = page_content.replace("  ", " ")
-        page_content = page_content.replace("Aston Villa", "Villans")
+        return page_content
+
+    def trim_nickname(self, page_content):
+        page_content = page_content.replace("AstonVilla", "Villans")
         page_content = page_content.replace("Bournemouth", "Cherries")
         page_content = page_content.replace("Bolton", "Trotters")
         page_content = page_content.replace("Barnsley", "Tykes")
-        page_content = page_content.replace("Burton Albion", "Brewers")
+        page_content = page_content.replace("BurtonAlbion", "Brewers")
         page_content = page_content.replace("Burnley", "Clarets")
-        page_content = page_content.replace("Bristol City", "Robins")
+        page_content = page_content.replace("BristolCity", "Robins")
+        page_content = page_content.replace("BristolC", "Robins")
+        page_content = page_content.replace("Brighton", "Seagulls")
         page_content = page_content.replace("Brentford", "Bees")
         page_content = page_content.replace("Birmingham", "Blues")
+        page_content = page_content.replace("Birmingh.", "Blues")
         page_content = page_content.replace("CrystalP", "Eagles")
         page_content = page_content.replace("Chelsea", "Pensioners")
         page_content = page_content.replace("Coventry", "SkyBlues")
+        page_content = page_content.replace("Derby", "Rams")
         page_content = page_content.replace("Exeter", "Grecians")
+        page_content = page_content.replace("Everton", "Toffees")
         page_content = page_content.replace("Ipswich", "TractorBoys")
         page_content = page_content.replace("Fulham", "Cottagers")
         page_content = page_content.replace("Huddersfield", "Terriers")
+        page_content = page_content.replace("Huddersf.", "Terriers")
         page_content = page_content.replace("Leicester", "Foxes")
+        page_content = page_content.replace("LeedsU", "Peacocks")
+        page_content = page_content.replace("Leeds", "Peacocks")
         page_content = page_content.replace("Liverpool", "Reds")
         page_content = page_content.replace("Luton", "Hatters")
         page_content = page_content.replace("Man United", "RedDevils")
         page_content = page_content.replace("Man City", "Citizens")
         page_content = page_content.replace("Millwall", "Lions")
         page_content = page_content.replace("Middlesbrough", "Smoggies")
+        page_content = page_content.replace("Middlesbr", "Smoggies")
         page_content = page_content.replace("Newcastle", "Toon")
         page_content = page_content.replace("Norwich", "Canaries")
         page_content = page_content.replace("Nottingham", "TrickyTrees")
+        page_content = page_content.replace("Preston", "Whites")
         page_content = page_content.replace("Southampton", "Saints")
+        page_content = page_content.replace("Southampt", "Saints")
         page_content = page_content.replace("Sheffield U", "Blades")
         page_content = page_content.replace("Sheffield W", "Owls")
         page_content = page_content.replace("Sheff U", "Blades")
@@ -144,7 +158,9 @@ class TekstiTvHandler:
         page_content = page_content.replace("Swansea", "Swans")
         page_content = page_content.replace("Tottenham", "Yids")
         page_content = page_content.replace("Watford", "Hornets")
-        page_content = page_content.replace("West Bromwich", "Baggies")
+        page_content = page_content.replace("WestBromwich", "Baggies")
+        page_content = page_content.replace("WestBrom", "Baggies")
+        page_content = page_content.replace("WestHam", "Hammers")
         page_content = page_content.replace("Wigan", "Tics")
         return page_content
 
@@ -260,6 +276,7 @@ def main():
                 page_content = vakiokone.return_status_on_page(page_content)
                 vakiokone.VAKIOKONE_LATEST_PAGE_NUMBER = browser.TEKSTITV_LATEST_PAGE_NUMBER
                 vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
+                page_content = browser.trim_nickname(page_content)
             elif last_chat_text.find("timeout") != -1:
                 timeout = last_chat_text.replace("timeout", "")
                 if timeout.isdigit():
@@ -288,7 +305,13 @@ def main():
                 if page_content.find(vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT) == -1:
                     print "Vakio game statuses changed!"
                     try:
-                        greet_bot.send_message(last_chat_id, page_content)
+                        page_content_incl_diff_list = difflib.ndiff(vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT.splitlines(1), page_content.splitlines(1))
+                        page_content_incl_diff = ''.join(page_content_incl_diff_list)
+                        # Remove empty lines, question mark -lines and minus-lines
+                        only_diff_str = re.sub(r'^[-? \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
+                        only_diff_str = only_diff_str.replace(" +", "")
+                        greet_bot.send_message(last_chat_id, only_diff_str)
+                        #greet_bot.send_message(last_chat_id, page_content)
                         vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
                     except ConnectionError:
                         last_update = ""
@@ -308,6 +331,7 @@ def main():
                         page_content_incl_diff = ''.join(page_content_incl_diff_list)
                         # Remove empty lines, question mark -lines and minus-lines
                         only_diff_str = re.sub(r'^[-? \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
+                        only_diff_str = only_diff_str.replace(" +", "")
                         greet_bot.send_message(last_chat_id, only_diff_str)
                         browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] = page_content
                     except ConnectionError:
