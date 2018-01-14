@@ -309,7 +309,7 @@ def main():
                         page_content_incl_diff = ''.join(page_content_incl_diff_list)
                         # Remove empty lines, question mark -lines and minus-lines
                         only_diff_str = re.sub(r'^[-? \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
-                        only_diff_str = only_diff_str.replace(" +", "")
+                        only_diff_str = only_diff_str.replace("+ ", "")
                         greet_bot.send_message(last_chat_id, only_diff_str)
                         #greet_bot.send_message(last_chat_id, page_content)
                         vakiokone.VAKIOKONE_LATEST_PAGE_CONTENT = page_content
@@ -331,7 +331,7 @@ def main():
                         page_content_incl_diff = ''.join(page_content_incl_diff_list)
                         # Remove empty lines, question mark -lines and minus-lines
                         only_diff_str = re.sub(r'^[-? \t]+[^\n]+[\n]', '', page_content_incl_diff, flags=re.MULTILINE)
-                        only_diff_str = only_diff_str.replace(" +", "")
+                        only_diff_str = only_diff_str.replace("+ ", "")
                         greet_bot.send_message(last_chat_id, only_diff_str)
                         browser.TEKSTITV_MONITOR_PAGE_CONTENTS[id] = page_content
                     except ConnectionError:
